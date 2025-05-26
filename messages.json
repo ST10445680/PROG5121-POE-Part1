@@ -1,0 +1,64 @@
+[ {
+  "messageID" : "8778925695",
+  "i" : 0,
+  "messageInput" : "My name is Thembelihle",
+  "messageHash" : "87:0:MYTHEMBELIHLE",
+  "messageCount" : 3,
+  "messageLength" : 250,
+  "recipientCellNumber" : "0815157387",
+  "menuChoice" : "1"
+}, {
+  "messageID" : "6147753618",
+  "i" : 0,
+  "messageInput" : "My name is Thembelihle",
+  "messageHash" : "61:0:MYTHEMBELIHLE",
+  "messageCount" : 0,
+  "messageLength" : 250,
+  "recipientCellNumber" : "0815157387",
+  "menuChoice" : "1"
+}, {
+  "messageID" : "2361694033",
+  "i" : 0,
+  "messageInput" : "My surname is Mhlanga",
+  "messageHash" : "23:0:MYMHLANGA",
+  "messageCount" : 0,
+  "messageLength" : 250,
+  "recipientCellNumber" : "0815157387",
+  "menuChoice" : "1"
+}, {
+  "messageID" : "6825380357",
+  "i" : 0,
+  "messageInput" : "I am 20 years old",
+  "messageHash" : "68:0:IOLD",
+  "messageCount" : 0,
+  "messageLength" : 250,
+  "recipientCellNumber" : "0815157387",
+  "menuChoice" : "1"
+}, {
+  "messageID" : "5267865266",
+  "i" : 0,
+  "messageInput" : "My name is Thembelihle",
+  "messageHash" : "52:0:MYTHEMBELIHLE",
+  "messageCount" : 0,
+  "messageLength" : 250,
+  "recipientCellNumber" : "0815157387",
+  "menuChoice" : "1"
+}, {
+  "messageID" : "3114388196",
+  "i" : 0,
+  "messageInput" : "My surname is Mhlanga",
+  "messageHash" : "31:0:MYMHLANGA",
+  "messageCount" : 0,
+  "messageLength" : 250,
+  "recipientCellNumber" : "0815157387",
+  "menuChoice" : "1"
+}, {
+  "messageID" : "3545759977",
+  "i" : 0,
+  "messageInput" : "I am 20 years old",
+  "messageHash" : "35:0:IOLD",
+  "messageCount" : 0,
+  "messageLength" : 250,
+  "recipientCellNumber" : "0815157387",
+  "menuChoice" : "1"
+} ]

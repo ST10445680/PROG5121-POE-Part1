@@ -34,7 +34,7 @@ public class Login {
         if(inputUserName.equals(regUser.getuserName()) &&
                inputPassword.equals(regUser.getpassWord())){
         isValidUser= true;
-        JOptionPane.showMessageDialog(null,"Welcome" +inputUserName+ "it is great to see you again.");
+        JOptionPane.showMessageDialog(null,"Welcome " +inputUserName+ " it is great to see you again.");
           break;// Exit the loop after successful login
           
         }else{  

@@ -92,14 +92,17 @@ public void regUser(){
   
  while(true){
        
-   String passWordInput = JOptionPane.showInputDialog(null, "Please enter a password that is 8 or more characters, ensure that it has the following : Contain a capital letter" +
-            "\nContain a number." +
-            "\nContain a special character.");
+   String passWordInput = JOptionPane.showInputDialog(null, "Please enter a password that is 8 or more characters, ensure that it has the following : "
+                                                            +"\nContain a capital letter" 
+                                                            +"\nContain a number."
+                                                            +"\nContain a special character.");
+   
    
    if (passWordInput == null || passWordInput.equalsIgnoreCase("exit")){
        JOptionPane.showMessageDialog(null,"Exiting the application, Goodbye.");
        return;
    }
+   
    
    if(checkPasswordComplexity(passWordInput)){
        setpassWord(passWordInput);
@@ -138,7 +141,7 @@ public boolean checkPasswordComplexity(String passWord){
  
  
  // Regex to validate complexity
- String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
+ String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$";
 
 // Check the password against the regex
 if (passWord.matches(passwordRegex)) {
@@ -148,18 +151,18 @@ if (passWord.matches(passwordRegex)) {
     JOptionPane.showMessageDialog(null, 
         "Password is not correctly formatted." +
         "\nMake sure it is at least 8 characters long and includes: " +
-        "\n A capital letter\n" +
+        "\n A capital letter" +
         "\n A number" +
         "\n A special character");
 }
  return passwordIsValid;   
 }
         
+
+
       //Validates cell phone number:
      // Must be exactly 10 digits, start with 0, and be numeric.
     // If valid, formats it to include South Africa's +27 code. 
-
-
  public boolean checkCellPhoneNumber(String cellNumber){
      
  boolean cellIsValid = false;
