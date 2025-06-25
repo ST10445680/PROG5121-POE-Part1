@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.ArrayList;    
 import java.util.List;
 
 
@@ -20,6 +20,29 @@ import java.util.List;
  */
 public class Message {
    
+
+// Array declarations  
+private static ArrayList<Message> sentMessages = new ArrayList<>();  
+private static ArrayList<Message> disregardedMessages = new ArrayList<>();  
+private static ArrayList<Message> storedMessages = new ArrayList<>();  
+private static ArrayList<String> messageHashes = new ArrayList<>();  
+private static ArrayList<String> messageIDs = new ArrayList<>();   
+
+public static List<Message> getSentMessages() {
+    return sentMessages;
+}
+
+public static List<Message> getStoredMessages() {
+    return storedMessages;
+}
+
+
+private String flag;
+
+public void setFlag(String flag) {
+    this.flag = flag;
+}
+    
 //Declaring variables   
 private String messageID;
 private int i;
@@ -32,8 +55,8 @@ private static final String FILE_PATH = "messages.json";
 private ObjectMapper mapper = new ObjectMapper();
 
 private String menuChoice;  // Added declaration here — you had used menuChoice before declaring it
-
-//Getters and setters
+ 
+//Getters and setters      
 
 public String getMenuChoice(){
     return menuChoice;
@@ -108,23 +131,54 @@ public void showWelcomeMessage() {
 //Menu that displays at startup to prompt user selection      
 public void showMenuAndSetChoice() {
     do {
-        menuChoice = JOptionPane.showInputDialog(null,"\nPlease select one of the following:"
-                                +"\n1.Send messages"
-                                +"\n2.Show recently sent messages- COMING SOON"
-                                +"\n3.Quit");
+         menuChoice = JOptionPane.showInputDialog(null,"\nPlease select one of the following:"  
+                                    +"\n1.Send messages"  
+                                    +"\n2.Show recently sent messages"  
+                                    +"\n3.Quit"  
+                                    +"\n4.Display sender & recipient of all sent messages"  
+                                    +"\n5.Display the longest sent message"  
+                                    +"\n6.Search message by ID"  
+                                    +"\n7.Search messages sent to a recipient"  
+                                    +"\n8.Delete message by hash"  
+                                    +"\n9.Show full report of all sent messages"  
+                                    +"\n10.Clear all sent messages"); 
 
         switch (menuChoice) {
-            case "1":
-                MessageHandling();
-                break;
-            case "2":
-                printMessages(1);
-                break;
-            case "3":
-                JOptionPane.showMessageDialog(null, "Goodbye!");
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "Invalid choice.");
+            case "1":  
+                    MessageHandling();  
+                    break;  
+                case "2":  
+                    printMessages(1);  
+                    break;  
+                case "3":  
+                    JOptionPane.showMessageDialog(null, "Goodbye!");  
+                    break;  
+                case "4":  
+                    MessageTest.displaySenderAndRecipient(sentMessages);  
+                    break;  
+                case "5":  
+                    MessageTest.displayLongestMessage(sentMessages);  
+                    break;  
+                case "6":  
+                     MessageTest.searchByMessageID(storedMessages, JOptionPane.showInputDialog("Enter Message ID:"));  
+                    break;  
+                case "7":  
+                    MessageTest.searchMessagesToRecipient(storedMessages, JOptionPane.showInputDialog("Enter Recipient Number:"));  
+                    break;  
+                case "8":  
+                  MessageTest.deleteMessageByHash(storedMessages, JOptionPane.showInputDialog("Enter Message Hash:"));  
+                this.storeMessage(this); // Save after deletion  
+                    break;  
+                case "9":  
+                    MessageTest.displayFullReport(sentMessages);  
+                    break;  
+                case "10":  
+                    MessageTest.clearAllMessages(sentMessages);  
+                  
+                this.storeMessage(this); // Save after clearing  
+                    break;  
+                default:  
+                    JOptionPane.showMessageDialog(null, "Invalid choice.");  
         }
 
     } while (!"3".equals(menuChoice));
@@ -281,59 +335,24 @@ public void sentMessage(){
 }
   
 //Displaying a list of messages sent throughout the program
-public void printMessages(int i){
-  
-    try {
-        // Create ObjectMapper to read JSON
-        ObjectMapper mapper = new ObjectMapper();
-        
-        // Point to the JSON file storing messages
-        File file = new File("messages.json");
-
-        // Check if file exists
-        if (!file.exists()) {
-            // Show message if none
-            JOptionPane.showMessageDialog(null, "No messages found.");
-            // Exit method early
-            return;
-        }
-
-        // Read the list of Message objects from the JSON file
-        List<Message> messages = mapper.readValue(file, new TypeReference<List<Message>>() {});
-
-        // Check if list is empty
-        if (messages.isEmpty()) {
-            // Show message if empty
-            JOptionPane.showMessageDialog(null, "No messages found.");
-            // Exit method early
-            return;
-        }
-
-        // Prepare a string builder for output
-        StringBuilder output = new StringBuilder();
-
-        // Start numbering from i
-        int count = i;
-
-        // Loop through each message and append its content with numbering
-        for (Message msg : messages) {
-            output.append(count).append(". ").append(msg.getMessageInput()).append("\n");
-            // Increment count for next message
-            count++;
-        }
-
-        // Show all messages in a pop-up dialog box
-        JOptionPane.showMessageDialog(null, output.toString());
-
-    } catch (Exception e) {
-        // Show error if something goes wrong
-        JOptionPane.showMessageDialog(null, "Error reading messages.");
-        // Print stack trace for debugging
-        e.printStackTrace();
+public void printMessages(int i) {
+    // First ensure we have latest data
+    loadMessages();
+    
+    if (sentMessages.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "No messages found.");
+        return;
     }
     
+    StringBuilder output = new StringBuilder();
+    int count = i;
+    for (Message msg : sentMessages) {
+        output.append(count++).append(". ").append(msg.getMessageInput()).append("\n");
+    }
+    JOptionPane.showMessageDialog(null, output.toString());
 }
-  
+
+
   
 //Method that returns the total number of messages
 public int returnTotalMessages(){
@@ -354,35 +373,59 @@ public int returnTotalMessages(){
     return i;
 }
   
+
+    
+
+
+
 //JSON file storage
-public void storeMessage(Message message){
-
-    ObjectMapper mapper = new ObjectMapper();
-    File file = new File("messages.json");
-    List<Message> messages = new ArrayList<>();
-
-    // Load existing messages
-    if (file.exists()) {
-        try {
-            messages = mapper.readValue(file, new TypeReference<List<Message>>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Add the new message to the list
-    messages.add(message);
-
-    // Save the updated list back to the file
+// Method to store a message into the JSON file
+public void storeMessage(Message message) {
     try {
-        mapper.writerWithDefaultPrettyPrinter().writeValue(file, messages);
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File("messages.json");
+        
+        // Always read current messages from file first
+        List<Message> allMessages = file.exists() ? 
+            mapper.readValue(file, new TypeReference<List<Message>>() {}) : 
+            new ArrayList<>();
+            
+        // Add the new message
+        allMessages.add(message);
+        
+        // Save to file
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file, allMessages);
+        
+        // Update the static lists
+        sentMessages = new ArrayList<>(allMessages);
+        storedMessages = new ArrayList<>(allMessages);
+        
     } catch (IOException e) {
-        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error saving message: " + e.getMessage());
     }
 }
 
-}  
+public static void loadMessages() {
+    try {
+        File file = new File("messages.json");
+        if (file.exists()) {
+            ObjectMapper mapper = new ObjectMapper();
+            List<Message> loadedMessages = 
+                mapper.readValue(file, new TypeReference<List<Message>>() {});
+            
+            sentMessages.clear();
+            storedMessages.clear();
+            sentMessages.addAll(loadedMessages);
+            storedMessages.addAll(loadedMessages);
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(null, "Error loading messages: " + e.getMessage());
+    }
+}
 
+
+
+}  
 
 //Reference list: Reference listcodingtechroom, 2025. Java Regex: Validate Phone Numbers Using Regular Expressions - CodingTechRoom. [online]Available at: <https://codingtechroom.com/tutorial/java-java-regex-validate-phone-numbers> [Accessed 24 May 2025].
 //Farrell, J., 2022. Java Programming. 10th ed. S.L.: Cengage Learning.

@@ -34,6 +34,9 @@ public class ChatAppPOEPart1 {
         
         
         Message msg = new Message();  // Create instance of Message class
+        
+        Message.loadMessages();
+
 
         msg.showWelcomeMessage();
 
@@ -71,6 +74,46 @@ public class ChatAppPOEPart1 {
                     JOptionPane.showMessageDialog(null, "Thank you for using Quick Chat. Goodbye!");
                     running = false;
                     break;
+                case "4":
+                // Display sender & recipient of all sent messages
+                MessageTest.displaySenderAndRecipient(Message.getSentMessages());
+                break;
+
+               case "5":
+                   // Display the longest sent message
+                   MessageTest.displayLongestMessage(Message.getSentMessages());
+                   break;
+
+               case "6":
+                   // Search message by ID
+                   String messageID = JOptionPane.showInputDialog("Enter Message ID:");
+                   MessageTest.searchByMessageID(Message.getStoredMessages(), messageID);
+                   break;
+
+               case "7":
+                   // Search messages sent to a recipient
+                   String recipientNumber = JOptionPane.showInputDialog("Enter Recipient Number:");
+                   MessageTest.searchMessagesToRecipient(Message.getStoredMessages(), recipientNumber);
+                   break;
+
+               case "8":
+                   // Delete message by hash
+                   String messageHash = JOptionPane.showInputDialog("Enter Message Hash:");
+                   MessageTest.deleteMessageByHash(Message.getStoredMessages(), messageHash);
+                   // Save after deletion
+                   break;
+
+               case "9":
+                   // Show full report
+                   MessageTest.displayFullReport(Message.getSentMessages());
+                   break;
+
+               case "10":
+                   // Clear all sent messages
+                   MessageTest.clearAllMessages(Message.getSentMessages());
+                   // Save after clearing
+                 
+                   break;
 
                 default:
                     JOptionPane.showMessageDialog(null, "Invalid option selected. Please try again.");
@@ -82,4 +125,4 @@ public class ChatAppPOEPart1 {
     
 
 
-//Referenc
+//Reference list

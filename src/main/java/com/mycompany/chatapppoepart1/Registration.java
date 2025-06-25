@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 public class Registration {
   
-private String userName;
+private String userName; 
 private String passWord;
 private String cellNumber;
 

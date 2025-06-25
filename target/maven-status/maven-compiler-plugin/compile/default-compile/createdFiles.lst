@@ -1,6 +1,7 @@
 com\mycompany\chatapppoepart1\ChatAppPOEPart1.class
 com\mycompany\chatapppoepart1\Message.class
 com\mycompany\chatapppoepart1\Login.class
-com\mycompany\chatapppoepart1\Registration.class
 com\mycompany\chatapppoepart1\Message$2.class
+com\mycompany\chatapppoepart1\MessageTest.class
+com\mycompany\chatapppoepart1\Registration.class
 com\mycompany\chatapppoepart1\Message$1.class
